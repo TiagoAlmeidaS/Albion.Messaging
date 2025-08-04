@@ -1,0 +1,16 @@
+{
+  "rabbitMq": {
+    "uri": "amqp://myuser:mysecurepassword@localhost:5672",
+    "dispatchConsumersAsync": true
+  },
+  "exchanges": [
+    { "name": "albion.sniffer", "type": "topic", "durable": true, "autoDelete": false },
+    { "name": "albion.fishing", "type": "direct", "durable": true, "autoDelete": false },
+    { "name": "albion.events.raw", "type": "fanout", "durable": true, "autoDelete": false }
+  ],
+  "queues": [
+    { "name": "sniffer.raw.packets", "bindingKey": "albion.packet.*", "exchange": "albion.sniffer", "durable": true },
+    { "name": "sniffer.events.newcharacter", "bindingKey": "albion.event.newcharacter", "exchange": "albion.sniffer", "durable": true },
+    { "name": "fishing.bot.trigger", "bindingKey": "fish.*", "exchange": "albion.fishing", "durable": true }
+  ]
+}
