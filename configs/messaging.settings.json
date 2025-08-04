@@ -1,6 +1,6 @@
 {
   "rabbitMq": {
-    "uri": "amqp://myuser:mysecurepassword@localhost:5672",
+    "uri": "amqp://myuser:mysecurepassword@rabbitmq:5672",
     "dispatchConsumersAsync": true
   },
   "exchanges": [
@@ -11,6 +11,7 @@
   "queues": [
     { "name": "sniffer.raw.packets", "bindingKey": "albion.packet.*", "exchange": "albion.sniffer", "durable": true },
     { "name": "sniffer.events.newcharacter", "bindingKey": "albion.event.newcharacter", "exchange": "albion.sniffer", "durable": true },
+    { "name": "sniffer.events.*", "bindingKey": "albion.event.*", "exchange": "albion.sniffer", "durable": true },
     { "name": "fishing.bot.trigger", "bindingKey": "fish.*", "exchange": "albion.fishing", "durable": true }
   ]
 }
