@@ -75,9 +75,14 @@ for (int i = 0; i < maxRetries; i++)
         var queues = configuration.GetSection("queues").Get<QueueConfig[]>() ?? [];
         foreach (var queue in queues)
         {
-            channel.QueueDeclare(queue.Name, queue.Durable, false, false);
+            var arguments = queue.GetArguments();
+            channel.QueueDeclare(queue.Name, queue.Durable, false, false, arguments);
             channel.QueueBind(queue.Name, queue.Exchange, queue.BindingKey);
-            Console.WriteLine($"✅ Queue ligada: {queue.Name} → {queue.Exchange} ({queue.BindingKey})");
+            
+            var limitInfo = queue.MaxLength.HasValue 
+                ? $" [Max: {queue.MaxLength}, Overflow: {queue.OverflowBehavior}]" 
+                : "";
+            Console.WriteLine($"✅ Queue ligada: {queue.Name} → {queue.Exchange} ({queue.BindingKey}){limitInfo}");
         }
         
         Console.WriteLine("🎉 Provisionamento concluído com sucesso!");
