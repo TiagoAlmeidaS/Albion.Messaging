@@ -1,6 +1,6 @@
 {
   "rabbitMq": {
-    "uri": "amqp://myuser:mysecurepassword@tastechdeveloper.shop:5672",
+    "uri": "amqp://myuser:mysecurepassword@localhost:5672",
     "dispatchConsumersAsync": true
   },
   "exchanges": [
@@ -14,4 +14,4 @@
     { "name": "sniffer.events.*", "bindingKey": "albion.event.*", "exchange": "albion.sniffer", "durable": true },
     { "name": "fishing.bot.trigger", "bindingKey": "fish.*", "exchange": "albion.fishing", "durable": true }
   ]
-}
+} 

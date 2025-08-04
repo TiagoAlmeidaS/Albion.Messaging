@@ -85,3 +85,50 @@ dotnet run --project RabbitMqProvisioner
 ```
 
 **Nota**: Certifique-se de que o RabbitMQ esteja rodando antes de executar o provisionador localmente.
+
+## 🖥️ Configuração em VPS
+
+Para configurar em uma VPS:
+
+```bash
+# Configurar ambiente
+./setup-vps.sh
+
+# Testar conectividade
+./test-rabbitmq.sh
+
+# Executar provisionador
+./dev.sh
+```
+
+### 🔧 Configuração do Sniffer
+
+Configure seu sniffer para conectar em:
+- **Host**: `localhost` (ou IP da VPS)
+- **Porta**: `5672`
+- **Usuário**: `myuser`
+- **Senha**: `mysecurepassword`
+
+### 🚨 Solução de Problemas
+
+Se encontrar erro `BrokerUnreachableException`:
+
+1. **Verifique se o RabbitMQ está rodando**:
+   ```bash
+   docker-compose ps
+   ```
+
+2. **Teste a conectividade**:
+   ```bash
+   ./test-rabbitmq.sh
+   ```
+
+3. **Verifique logs do RabbitMQ**:
+   ```bash
+   docker-compose logs rabbitmq
+   ```
+
+4. **Reinicie o RabbitMQ**:
+   ```bash
+   docker-compose restart rabbitmq
+   ```

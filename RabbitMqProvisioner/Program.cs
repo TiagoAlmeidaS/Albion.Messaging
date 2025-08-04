@@ -2,8 +2,20 @@ using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using RabbitMqProvisioner;
 
-// No container Docker, o arquivo de configuração está montado em /app/configs/
-var configPath = Path.Combine(AppContext.BaseDirectory, "configs", "messaging.settings.json");
+// Detectar o caminho correto do arquivo de configuração
+string configPath;
+if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" || 
+    File.Exists("/.dockerenv"))
+{
+    // No container Docker, o arquivo está montado em /app/configs/
+    configPath = Path.Combine(AppContext.BaseDirectory, "configs", "messaging.settings.json");
+}
+else
+{
+    // Localmente, procurar no diretório raiz do projeto
+    var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+    configPath = Path.Combine(projectRoot, "configs", "messaging.settings.json");
+}
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -13,14 +25,20 @@ var configuration = new ConfigurationBuilder()
 var rabbitConfig = configuration.GetSection("rabbitMq").Get<RabbitMqConfig>()
                   ?? throw new InvalidOperationException("rabbitMq settings missing");
 
-// Detectar se está rodando no Docker e ajustar o hostname
+// Detectar ambiente e ajustar hostname automaticamente
 var uri = rabbitConfig.Uri;
 if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" || 
     File.Exists("/.dockerenv"))
 {
-    // Substituir localhost por rabbitmq (nome do serviço no Docker Compose)
-    uri = uri.Replace("localhost", "rabbitmq");
+    // Substituir qualquer hostname por rabbitmq (nome do serviço no Docker Compose)
+    var uriBuilder = new UriBuilder(uri);
+    uriBuilder.Host = "rabbitmq";
+    uri = uriBuilder.ToString();
     Console.WriteLine("🐳 Executando no Docker - usando hostname 'rabbitmq'");
+}
+else if (uri.Contains("tastechdeveloper.shop"))
+{
+    Console.WriteLine("🌐 Conectando na VPS: tastechdeveloper.shop");
 }
 else
 {
