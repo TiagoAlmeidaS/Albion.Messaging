@@ -7,8 +7,8 @@ string configPath;
 if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" || 
     File.Exists("/.dockerenv"))
 {
-    // No container Docker, o arquivo está montado em /app/configs/
-    configPath = Path.Combine(AppContext.BaseDirectory, "configs", "messaging.settings.json");
+    // No container Docker, usar o arquivo VPS
+    configPath = Path.Combine(AppContext.BaseDirectory, "configs", "messaging.vps.settings.json");
 }
 else
 {
@@ -75,14 +75,37 @@ for (int i = 0; i < maxRetries; i++)
         var queues = configuration.GetSection("queues").Get<QueueConfig[]>() ?? [];
         foreach (var queue in queues)
         {
-            var arguments = queue.GetArguments();
-            channel.QueueDeclare(queue.Name, queue.Durable, false, false, arguments);
-            channel.QueueBind(queue.Name, queue.Exchange, queue.BindingKey);
-            
-            var limitInfo = queue.MaxLength.HasValue 
-                ? $" [Max: {queue.MaxLength}, Overflow: {queue.OverflowBehavior}]" 
-                : "";
-            Console.WriteLine($"✅ Queue ligada: {queue.Name} → {queue.Exchange} ({queue.BindingKey}){limitInfo}");
+            try
+            {
+                var arguments = queue.GetArguments();
+                
+                // Tentar declarar a fila com os novos argumentos
+                channel.QueueDeclare(queue.Name, queue.Durable, false, false, arguments);
+                channel.QueueBind(queue.Name, queue.Exchange, queue.BindingKey);
+                
+                var limitInfo = queue.MaxLength.HasValue 
+                    ? $" [Max: {queue.MaxLength}, Overflow: {queue.OverflowBehavior}]" 
+                    : "";
+                Console.WriteLine($"✅ Queue ligada: {queue.Name} → {queue.Exchange} ({queue.BindingKey}){limitInfo}");
+            }
+            catch (Exception ex) when (ex.Message.Contains("PRECONDITION_FAILED") && ex.Message.Contains("x-max-length"))
+            {
+                // Se a fila já existe com configurações diferentes, apenas fazer o bind
+                Console.WriteLine($"⚠️  Queue {queue.Name} já existe com configurações diferentes, fazendo apenas bind...");
+                try
+                {
+                    channel.QueueBind(queue.Name, queue.Exchange, queue.BindingKey);
+                    Console.WriteLine($"✅ Queue bind atualizado: {queue.Name} → {queue.Exchange} ({queue.BindingKey})");
+                }
+                catch (Exception bindEx)
+                {
+                    Console.WriteLine($"❌ Erro ao fazer bind da queue {queue.Name}: {bindEx.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao processar queue {queue.Name}: {ex.Message}");
+            }
         }
         
         Console.WriteLine("🎉 Provisionamento concluído com sucesso!");
