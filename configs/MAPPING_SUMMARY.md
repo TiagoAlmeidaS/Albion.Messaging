@@ -52,50 +52,50 @@ O mapeamento completo de **24 eventos** do Albion Online Sniffer para RabbitMQ f
 ## 🎯 **EVENTOS MAPEADOS**
 
 ### **🗺️ Clusters e Localização (3 eventos)**
-- `ChangeClusterEvent` → `albion.event.changeclusterevent`
-- `LoadClusterObjectsEvent` → `albion.event.loadclusterobjectsevent`
-- `MistsPlayerJoinedInfoEvent` → `albion.event.mistsplayerjoinedinfoevent`
+- `ClusterChangedV1` → `albion.event.cluster.changed`
+- `ClusterObjectsLoadedV1` → `albion.event.cluster.objects.loaded`
+- `MistsPlayerJoinedV1` → `albion.event.mists.player.joined`
 
 ### **👤 Jogadores (7 eventos)**
-- `NewCharacterEvent` → `albion.event.newcharacterevent`
-- `CharacterEquipmentChangedEvent` → `albion.event.characterequipmentchangedevent`
-- `HealthUpdateEvent` → `albion.event.healthupdateevent`
-- `RegenerationChangedEvent` → `albion.event.regenerationchangedevent`
-- `MountedEvent` → `albion.event.mountedevent`
-- `MoveEvent` → `albion.event.moveevent`
-- `ChangeFlaggingFinishedEvent` → `albion.event.changeflaggingfinishedevent`
+- `PlayerJoinedV1` → `albion.event.player.joined`
+- `EquipmentChangedV1` → `albion.event.player.equipment.changed`
+- `HealthUpdatedV1` → `albion.event.player.health.updated`
+- `RegenerationChangedV1` → `albion.event.player.regeneration.changed`
+- `MountedStateChangedV1` → `albion.event.player.mounted.changed`
+- `PlayerMovedV1` → `albion.event.player.moved`
+- `FlaggingFinishedV1` → `albion.event.player.flagging.finished`
 
 ### **🐉 Mobs (2 eventos)**
-- `NewMobEvent` → `albion.event.newmobevent`
-- `MobChangeStateEvent` → `albion.event.mobchangestateevent`
+- `MobSpawnedV1` → `albion.event.mob.spawned`
+- `MobStateChangedV1` → `albion.event.mob.state.changed`
 
 ### **🌿 Recursos (3 eventos)**
-- `NewHarvestableEvent` → `albion.event.newharvestableevent`
-- `NewHarvestablesListEvent` → `albion.event.newharvestableslistevent`
-- `HarvestableChangeStateEvent` → `albion.event.harvestablechangestateevent`
+- `HarvestableFoundV1` → `albion.event.harvestable.found`
+- `HarvestablesListFoundV1` → `albion.event.harvestable.list.found`
+- `HarvestableStateChangedV1` → `albion.event.harvestable.state.changed`
 
 ### **🏰 Dungeons (1 evento)**
-- `NewDungeonEvent` → `albion.event.newdungeonevent`
+- `DungeonFoundV1` → `albion.event.world.dungeon.found`
 
 ### **🎣 Pesca (1 evento)**
-- `NewFishingZoneEvent` → `albion.event.newfishingzoneevent`
+- `FishingZoneFoundV1` → `albion.event.world.fishing.zone.found`
 
 ### **🌟 Wisps/Portais (2 eventos)**
-- `NewGatedWispEvent` → `albion.event.newgatedwispevent`
-- `WispGateOpenedEvent` → `albion.event.wispgateopenedevent`
+- `GatedWispFoundV1` → `albion.event.world.gated.wisp.found`
+- `WispGateOpenedV1` → `albion.event.world.wisp.gate.opened`
 
 ### **📦 Baús (1 evento)**
-- `NewLootChestEvent` → `albion.event.newlootchestevent`
+- `LootChestFoundV1` → `albion.event.world.loot.chest.found`
 
 ### **🔄 Sincronização (1 evento)**
-- `KeySyncEvent` → `albion.event.keysyncevent`
+- `KeySyncV1` → `albion.event.cluster.key.sync`
 
 ### **🚪 Saída (1 evento)**
-- `LeaveEvent` → `albion.event.leaveevent`
+- `EntityLeftV1` → `albion.event.player.left`
 
 ### **⚙️ Operações (2 eventos)**
-- `JoinResponseOperation` → `albion.event.joinresponseoperation`
-- `MoveRequestOperation` → `albion.event.moverequestoperation`
+- `JoinResponseOperation` → `albion.event.joinresponse`
+- `PlayerMoveRequestV1` → `albion.event.player.move.request`
 
 ---
 
@@ -131,7 +131,7 @@ O mapeamento completo de **24 eventos** do Albion Online Sniffer para RabbitMQ f
 
 - **Durabilidade**: Todas as queues são duráveis para persistir mensagens
 - **AutoDelete**: False para manter queues mesmo sem consumidores
-- **Binding Keys**: Seguem o padrão `albion.event.{eventType}`
+- **Binding Keys**: Seguem o padrão `albion.event.<domínio>.<ação>[.<subação>]`
 - **Exchange Type**: Topic para permitir routing flexível
 - **Formato**: JSON com timestamp e dados estruturados
 

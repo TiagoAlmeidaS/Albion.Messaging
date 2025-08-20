@@ -7,53 +7,53 @@ import json
 import sys
 from typing import Dict, List, Set
 
-# Lista completa de eventos mapeados
+# Lista de eventos V1 com tópicos hierárquicos
 ALBION_EVENTS = {
     # Clusters e Localização
-    "ChangeClusterEvent": "albion.event.changeclusterevent",
-    "LoadClusterObjectsEvent": "albion.event.loadclusterobjectsevent", 
-    "MistsPlayerJoinedInfoEvent": "albion.event.mistsplayerjoinedinfoevent",
-    
+    "ClusterChangedV1": "albion.event.cluster.changed",
+    "ClusterObjectsLoadedV1": "albion.event.cluster.objects.loaded",
+    "MistsPlayerJoinedV1": "albion.event.mists.player.joined",
+
     # Jogadores
-    "NewCharacterEvent": "albion.event.newcharacterevent",
-    "CharacterEquipmentChangedEvent": "albion.event.characterequipmentchangedevent",
-    "HealthUpdateEvent": "albion.event.healthupdateevent",
-    "RegenerationChangedEvent": "albion.event.regenerationchangedevent",
-    "MountedEvent": "albion.event.mountedevent",
-    "MoveEvent": "albion.event.moveevent",
-    "ChangeFlaggingFinishedEvent": "albion.event.changeflaggingfinishedevent",
-    
+    "PlayerJoinedV1": "albion.event.player.joined",
+    "EquipmentChangedV1": "albion.event.player.equipment.changed",
+    "HealthUpdatedV1": "albion.event.player.health.updated",
+    "RegenerationChangedV1": "albion.event.player.regeneration.changed",
+    "MountedStateChangedV1": "albion.event.player.mounted.changed",
+    "PlayerMovedV1": "albion.event.player.moved",
+    "FlaggingFinishedV1": "albion.event.player.flagging.finished",
+
     # Mobs
-    "NewMobEvent": "albion.event.newmobevent",
-    "MobChangeStateEvent": "albion.event.mobchangestateevent",
-    
+    "MobSpawnedV1": "albion.event.mob.spawned",
+    "MobStateChangedV1": "albion.event.mob.state.changed",
+
     # Recursos
-    "NewHarvestableEvent": "albion.event.newharvestableevent",
-    "NewHarvestablesListEvent": "albion.event.newharvestableslistevent",
-    "HarvestableChangeStateEvent": "albion.event.harvestablechangestateevent",
-    
+    "HarvestableFoundV1": "albion.event.harvestable.found",
+    "HarvestablesListFoundV1": "albion.event.harvestable.list.found",
+    "HarvestableStateChangedV1": "albion.event.harvestable.state.changed",
+
     # Dungeons
-    "NewDungeonEvent": "albion.event.newdungeonevent",
-    
+    "DungeonFoundV1": "albion.event.world.dungeon.found",
+
     # Pesca
-    "NewFishingZoneEvent": "albion.event.newfishingzoneevent",
-    
+    "FishingZoneFoundV1": "albion.event.world.fishing.zone.found",
+
     # Wisps
-    "NewGatedWispEvent": "albion.event.newgatedwispevent",
-    "WispGateOpenedEvent": "albion.event.wispgateopenedevent",
-    
+    "GatedWispFoundV1": "albion.event.world.gated.wisp.found",
+    "WispGateOpenedV1": "albion.event.world.wisp.gate.opened",
+
     # Baús
-    "NewLootChestEvent": "albion.event.newlootchestevent",
-    
+    "LootChestFoundV1": "albion.event.world.loot.chest.found",
+
     # Sincronização
-    "KeySyncEvent": "albion.event.keysyncevent",
-    
+    "KeySyncV1": "albion.event.cluster.key.sync",
+
     # Saída
-    "LeaveEvent": "albion.event.leaveevent",
-    
+    "EntityLeftV1": "albion.event.player.left",
+
     # Operações
-    "JoinResponseOperation": "albion.event.joinresponseoperation",
-    "MoveRequestOperation": "albion.event.moverequestoperation"
+    "JoinResponseOperation": "albion.event.joinresponse",
+    "PlayerMoveRequestV1": "albion.event.player.move.request",
 }
 
 def load_config(filename: str) -> Dict:
@@ -102,33 +102,33 @@ def validate_queues(config: Dict) -> bool:
     
     # Queues específicas por evento
     required_queues = {
-        "clusters.change": "albion.event.changeclusterevent",
-        "clusters.loadobjects": "albion.event.loadclusterobjectsevent",
-        "clusters.mistsplayer": "albion.event.mistsplayerjoinedinfoevent",
-        "players.newcharacter": "albion.event.newcharacterevent",
-        "players.equipment": "albion.event.characterequipmentchangedevent",
-        "players.health": "albion.event.healthupdateevent",
-        "players.regeneration": "albion.event.regenerationchangedevent",
-        "players.mounted": "albion.event.mountedevent",
-        "players.move": "albion.event.moveevent",
-        "players.flagging": "albion.event.changeflaggingfinishedevent",
-        "mobs.new": "albion.event.newmobevent",
-        "mobs.state": "albion.event.mobchangestateevent",
-        "resources.new": "albion.event.newharvestableevent",
-        "resources.list": "albion.event.newharvestableslistevent",
-        "resources.state": "albion.event.harvestablechangestateevent",
-        "dungeons.new": "albion.event.newdungeonevent",
-        "fishing.zone": "albion.event.newfishingzoneevent",
+        "clusters.change": "albion.event.cluster.changed",
+        "clusters.loadobjects": "albion.event.cluster.objects.loaded",
+        "clusters.mistsplayer": "albion.event.mists.player.joined",
+        "players.newcharacter": "albion.event.player.joined",
+        "players.equipment": "albion.event.player.equipment.changed",
+        "players.health": "albion.event.player.health.updated",
+        "players.regeneration": "albion.event.player.regeneration.changed",
+        "players.mounted": "albion.event.player.mounted.changed",
+        "players.move": "albion.event.player.moved",
+        "players.flagging": "albion.event.player.flagging.finished",
+        "mobs.new": "albion.event.mob.spawned",
+        "mobs.state": "albion.event.mob.state.changed",
+        "resources.new": "albion.event.harvestable.found",
+        "resources.list": "albion.event.harvestable.list.found",
+        "resources.state": "albion.event.harvestable.state.changed",
+        "dungeons.new": "albion.event.world.dungeon.found",
+        "fishing.zone": "albion.event.world.fishing.zone.found",
         "fishing.bot.trigger": "fish.*",
-        "wisps.new": "albion.event.newgatedwispevent",
-        "wisps.gate": "albion.event.wispgateopenedevent",
-        "chests.new": "albion.event.newlootchestevent",
-        "sync.keys": "albion.event.keysyncevent",
-        "objects.leave": "albion.event.leaveevent",
-        "operations.join": "albion.event.joinresponseoperation",
-        "operations.move": "albion.event.moverequestoperation",
+        "wisps.new": "albion.event.world.gated.wisp.found",
+        "wisps.gate": "albion.event.world.wisp.gate.opened",
+        "chests.new": "albion.event.world.loot.chest.found",
+        "sync.keys": "albion.event.cluster.key.sync",
+        "objects.leave": "albion.event.player.left",
+        "operations.join": "albion.event.joinresponse",
+        "operations.move": "albion.event.player.move.request",
         "sniffer.raw.packets": "albion.packet.*",
-        "sniffer.events.newcharacter": "albion.event.newcharacter",
+        "sniffer.events.newcharacter": "albion.event.player.joined",
         "sniffer.events.*": "albion.event.*"
     }
     

@@ -6,7 +6,7 @@ Este documento mapeia todos os **23 tipos de eventos** capturados pelo Albion On
 
 ### 🔧 **Configuração do Sistema**
 - **Exchange Principal**: `albion.sniffer` (topic)
-- **Pattern de Topics**: `albion.event.{eventType.ToLowerInvariant()}`
+- **Pattern de Topics**: `albion.event.<domínio>.<ação>[.<subação>]` (hierárquico)
 - **Formato da Mensagem**: JSON com metadados e dados do evento
 - **Frequência**: Tempo real conforme pacotes capturados
 
@@ -35,81 +35,81 @@ Este documento mapeia todos os **23 tipos de eventos** capturados pelo Albion On
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `ChangeClusterEvent` | `albion.event.changeclusterevent` | `clusters.change` | Mudança de cluster/localização |
-| `LoadClusterObjectsEvent` | `albion.event.loadclusterobjectsevent` | `clusters.loadobjects` | Carregamento de objetivos do cluster |
-| `MistsPlayerJoinedInfoEvent` | `albion.event.mistsplayerjoinedinfoevent` | `clusters.mistsplayer` | Jogador entrando nos Mists |
+| `ClusterChangedV1` | `albion.event.cluster.changed` | `clusters.change` | Mudança de cluster/localização |
+| `ClusterObjectsLoadedV1` | `albion.event.cluster.objects.loaded` | `clusters.loadobjects` | Carregamento de objetivos do cluster |
+| `MistsPlayerJoinedV1` | `albion.event.mists.player.joined` | `clusters.mistsplayer` | Jogador entrando nos Mists |
 
 ### 👤 **2. EVENTOS DE JOGADORES**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewCharacterEvent` | `albion.event.newcharacterevent` | `players.newcharacter` | Novo jogador detectado |
-| `CharacterEquipmentChangedEvent` | `albion.event.characterequipmentchangedevent` | `players.equipment` | Mudança de equipamento |
-| `HealthUpdateEvent` | `albion.event.healthupdateevent` | `players.health` | Atualização de vida |
-| `RegenerationChangedEvent` | `albion.event.regenerationchangedevent` | `players.regeneration` | Mudança na regeneração |
-| `MountedEvent` | `albion.event.mountedevent` | `players.mounted` | Montou/desmontou |
-| `MoveEvent` | `albion.event.moveevent` | `players.move` | Movimento de jogadores |
-| `ChangeFlaggingFinishedEvent` | `albion.event.changeflaggingfinishedevent` | `players.flagging` | Mudança de facção |
+| `PlayerJoinedV1` | `albion.event.player.joined` | `players.newcharacter` | Novo jogador detectado |
+| `EquipmentChangedV1` | `albion.event.player.equipment.changed` | `players.equipment` | Mudança de equipamento |
+| `HealthUpdatedV1` | `albion.event.player.health.updated` | `players.health` | Atualização de vida |
+| `RegenerationChangedV1` | `albion.event.player.regeneration.changed` | `players.regeneration` | Mudança na regeneração |
+| `MountedStateChangedV1` | `albion.event.player.mounted.changed` | `players.mounted` | Montou/desmontou |
+| `PlayerMovedV1` | `albion.event.player.moved` | `players.move` | Movimento de jogadores |
+| `FlaggingFinishedV1` | `albion.event.player.flagging.finished` | `players.flagging` | Mudança de facção |
 
 ### 🐉 **3. EVENTOS DE MOBS**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewMobEvent` | `albion.event.newmobevent` | `mobs.new` | Novo mob detectado |
-| `MobChangeStateEvent` | `albion.event.mobchangestateevent` | `mobs.state` | Mudança de estado do mob |
+| `MobSpawnedV1` | `albion.event.mob.spawned` | `mobs.new` | Novo mob detectado |
+| `MobStateChangedV1` | `albion.event.mob.state.changed` | `mobs.state` | Mudança de estado do mob |
 
 ### 🌿 **4. EVENTOS DE RECURSOS (HARVESTABLES)**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewHarvestableEvent` | `albion.event.newharvestableevent` | `resources.new` | Novo recurso detectado |
-| `NewHarvestablesListEvent` | `albion.event.newharvestableslistevent` | `resources.list` | Lista de recursos |
-| `HarvestableChangeStateEvent` | `albion.event.harvestablechangestateevent` | `resources.state` | Mudança de estado do recurso |
+| `HarvestableFoundV1` | `albion.event.harvestable.found` | `resources.new` | Novo recurso detectado |
+| `HarvestablesListFoundV1` | `albion.event.harvestable.list.found` | `resources.list` | Lista de recursos |
+| `HarvestableStateChangedV1` | `albion.event.harvestable.state.changed` | `resources.state` | Mudança de estado do recurso |
 
 ### 🏰 **5. EVENTOS DE DUNGEONS**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewDungeonEvent` | `albion.event.newdungeonevent` | `dungeons.new` | Nova dungeon detectada |
+| `DungeonFoundV1` | `albion.event.world.dungeon.found` | `dungeons.new` | Nova dungeon detectada |
 
 ### 🎣 **6. EVENTOS DE PESCA**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewFishingZoneEvent` | `albion.event.newfishingzoneevent` | `fishing.zone` | Nova zona de pesca |
+| `FishingZoneFoundV1` | `albion.event.world.fishing.zone.found` | `fishing.zone` | Nova zona de pesca |
 | `fish.*` | `fish.*` | `fishing.bot.trigger` | Triggers para bot de pesca |
 
 ### 🌟 **7. EVENTOS DE WISPS (PORTAIS)**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewGatedWispEvent` | `albion.event.newgatedwispevent` | `wisps.new` | Novo wisp de portal |
-| `WispGateOpenedEvent` | `albion.event.wispgateopenedevent` | `wisps.gate` | Portal de wisp aberto |
+| `GatedWispFoundV1` | `albion.event.world.gated.wisp.found` | `wisps.new` | Novo wisp de portal |
+| `WispGateOpenedV1` | `albion.event.world.wisp.gate.opened` | `wisps.gate` | Portal de wisp aberto |
 
 ### 📦 **8. EVENTOS DE BAÚS**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `NewLootChestEvent` | `albion.event.newlootchestevent` | `chests.new` | Novo baú de loot |
+| `LootChestFoundV1` | `albion.event.world.loot.chest.found` | `chests.new` | Novo baú de loot |
 
 ### 🔄 **9. EVENTOS DE SINCRONIZAÇÃO**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `KeySyncEvent` | `albion.event.keysyncevent` | `sync.keys` | Sincronização de chave XOR |
+| `KeySyncV1` | `albion.event.cluster.key.sync` | `sync.keys` | Sincronização de chave XOR |
 
 ### 🚪 **10. EVENTOS DE SAÍDA**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `LeaveEvent` | `albion.event.leaveevent` | `objects.leave` | Jogador/mob saiu do radar |
+| `EntityLeftV1` | `albion.event.player.left` | `objects.leave` | Jogador/mob saiu do radar |
 
 ### ⚙️ **11. EVENTOS DE OPERAÇÕES**
 
 | Evento | Topic | Queue | Descrição |
 |--------|-------|-------|-----------|
-| `JoinResponseOperation` | `albion.event.joinresponseoperation` | `operations.join` | Resposta de entrada no servidor |
-| `MoveRequestOperation` | `albion.event.moverequestoperation` | `operations.move` | Requisição de movimento |
+| `JoinResponseOperation` | `albion.event.joinresponse` | `operations.join` | Resposta de entrada no servidor |
+| `PlayerMoveRequestV1` | `albion.event.player.move.request` | `operations.move` | Requisição de movimento |
 
 ---
 
@@ -122,7 +122,7 @@ Este documento mapeia todos os **23 tipos de eventos** capturados pelo Albion On
 4. Atualização de Estado → Handlers de GameObjects
 5. Dispatch → EventDispatcher
 6. Publicação → RabbitMQ Publisher
-7. Topic → albion.event.{eventType}
+7. Topic → albion.event.<domínio>.<ação>[.<subação>]
 ```
 
 ---
@@ -153,10 +153,10 @@ channel.bindQueue('fishing.bot.trigger', 'albion.fishing', 'fish.*');
 ```
 
 ### **Filtros por Categoria**
-- **Jogadores**: `albion.event.newcharacterevent`, `albion.event.moveevent`, etc.
-- **Recursos**: `albion.event.newharvestableevent`, `albion.event.harvestablechangestateevent`
-- **Mobs**: `albion.event.newmobevent`, `albion.event.mobchangestateevent`
-- **Clusters**: `albion.event.changeclusterevent`, `albion.event.loadclusterobjectsevent`
+- **Jogadores**: `albion.event.player.*`
+- **Recursos**: `albion.event.harvestable.*`
+- **Mobs**: `albion.event.mob.*`
+- **Clusters**: `albion.event.cluster.*`
 
 ---
 
@@ -185,7 +185,7 @@ channel.bindQueue('fishing.bot.trigger', 'albion.fishing', 'fish.*');
 
 1. **Durabilidade**: Todas as queues são duráveis para persistir mensagens
 2. **AutoDelete**: False para manter queues mesmo sem consumidores
-3. **Binding Keys**: Seguem o padrão `albion.event.{eventType}`
+3. **Binding Keys**: Seguem o padrão `albion.event.<domínio>.<ação>[.<subação>]`
 4. **Exchange Type**: Topic para permitir routing flexível
 5. **Formato**: JSON com timestamp e dados estruturados
 
